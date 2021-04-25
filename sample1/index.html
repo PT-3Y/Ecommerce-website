@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- Favicon -->
+  <link rel="shortcut icon" href="./images/shoe-favicon.png" type="image/x-icon">
+  <!-- Box icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css" />
+
+  <!-- Custom StyleSheet -->
+  <link rel="stylesheet" href="./css/styles.css" />
+
+  <!-- AngularJS library from CDN -->
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+
+  <title>Ecommerce Website</title>
+  <script>
+    var mainChoice = -1;
+    var mainName = "hello sample";
+    window.addEventListener('load', () => {
+      const choice = sessionStorage.getItem('Choice');
+      if (choice == '1') {
+        const name = sessionStorage.getItem('Name')[0].toUpperCase() + sessionStorage.getItem('Name').slice(1);
+        const email = sessionStorage.getItem('Email');
+        const password = sessionStorage.getItem('Password');
+        document.getElementById('account_name').textContent = name;
+        mainName = name;
+      }
+      else {
+        const email = sessionStorage.getItem('Email');
+        const password = sessionStorage.getItem('Password');
+        const name = email.split("@")[0][0].toUpperCase() + email.split("@")[0].slice(1);
+        document.getElementById('account_name').textContent = name;
+        mainName = name;
+      }
+      mainChoice = choice;
+    })
+    function storeData() {
+      var totalItems = angular.element(document.querySelector('[ng-controller="data"]')).scope().shopping.total_items;
+      var itemList = angular.element(document.querySelector('[ng-controller="data"]')).scope().items_list;
+      sessionStorage.setItem("TotalItems", totalItems);
+      sessionStorage.setItem("ItemList", itemList);
+      console.log("USER CHOICE " + mainChoice);
+      sessionStorage.setItem("Name", mainName);
+      console.log(totalItems);
+      console.log(itemList);
+      // sessionStorage.setItem("Email", email.value);
+      // sessionStorage.setItem("Password", password.value);
+    }
+  </script>
+</head>
+
+<body ng-app="mainApp" ng-controller="data" id="main_body">
+  <!-- Header -->
+  <header id="home" class="header">
+    <!-- Navigation -->
+    <nav id="main-nav" class="nav" style="position: fixed;top: 0;width: 100%;z-index: 999;background-color: #d1e2e9;">
+      <div class="navigation container">
+        <div class="logo">
+          <h1>FASHION FEET</h1>
+        </div>
+
+        <div class="nav-list">
+          <li class="nav-item">
+            <a href="#home" class="nav-link scroll-link">Home</a>
+          </li>
+          <li class="nav-item">
+            <a href="#products_section" class="nav-link">Products</a>
+          </li>
+          <li class="nav-item">
+            <a href="#testimonials_section" class="nav-link scroll-link">About</a>
+          </li>
+          <li class="nav-item">
+            <a href="#footer" class="nav-link scroll-link">Contact</a>
+          </li>
+          <li class="nav-item" style="margin-left: 20px;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+              style="fill:rgba(27, 40, 87, 1);">
+              <path
+                d="M12,2C6.579,2,2,6.579,2,12s4.579,10,10,10s10-4.579,10-10S17.421,2,12,2z M12,7c1.727,0,3,1.272,3,3s-1.273,3-3,3 c-1.726,0-3-1.272-3-3S10.274,7,12,7z M6.894,16.772c0.897-1.32,2.393-2.2,4.106-2.2h2c1.714,0,3.209,0.88,4.106,2.2 C15.828,18.14,14.015,19,12,19S8.172,18.14,6.894,16.772z">
+              </path>
+            </svg>
+          </li>
+          <li class="nav-item account_icon" style="margin-right: 25px;">
+            <a href="#account" id="account_name" class="nav-link scroll-link account_icon"
+              style="text-align: center;font-size:20px" onclick="logout_option()">
+              Account
+            </a>
+
+            <!-- modal popup starts -->
+
+            <!-- The Modal -->
+            <div id="myModal" class="modal">
+
+              <!-- Modal content -->
+              <div class="modal-content">
+                <p style="text-align: center;" class="unblur-content">
+                  Are you sure want to logout ?
+                  <br>
+                  <input type="submit" class="account-notnow close" value="Not now" style="margin-right: 30px;" />
+                  <a href="../registration_form-login_form/index.html">
+                    <input type="submit" name="signup" id="signup" class="account-logout" value="Logout" />
+                  </a>
+                </p>
+              </div>
+
+            </div>
+
+            <script>
+              // Get the modal
+              var modal = document.getElementById("myModal");
+
+              // Get the <span> element that closes the modal
+              var span = document.getElementsByClassName("close")[0];
+
+              // When the user clicks the button, open the modal 
+              function logout_option() {
+                modal.style.display = "block";
+              }
+
+              // When the user clicks on <span> (x), close the modal
+              span.onclick = function () {
+                modal.style.display = "none";
+              }
+
+              // When the user clicks anywhere outside of the modal, close it
+              window.onclick = function (event) {
+                if (event.target == modal) {
+                  modal.style.display = "none";
+                }
+              }
+            </script>
+            <!-- modal popup ends -->
+
+            <!-- style="font-weight:bold;color:#1b2857;background-color: #ededed;border-radius: 5px;" -->
+          </li>
+
+          <li class="nav-item">
+            <p
+              style="padding:10px; position:absolute;z-index:1;background-color:#f86469;border-radius: 50%;color: #ededed;padding: 2px;margin-left: 35px;width: 23px;text-align: center;">
+              {{shopping.total_items}}
+            </p>
+            <!-- <a href="" class="nav-link icon" onclick="storeData()"><i class="bx bx-shopping-bag"
+                style="transform: scale(1.3);"></i></a> -->
+            <a href="cart.html" class="nav-link icon" onclick="storeData()"><i class="bx bx-shopping-bag"
+                style="transform: scale(1.3);"></i></a>
+          </li>
+          </ul>
+        </div>
+        <div class="hamburger">
+          <i class="bx bx-menu"></i>
+        </div>
+      </div>
+    </nav>
+
+    <!-- poster -->
+    <img src="./images/collection1.png" alt="" class="hero-img" />
+
+    <div class="hero-content">
+      <h2><span class="discount">70% </span> SALE OFF</h2>
+      <h1>
+        <span>Summer Vibes</span>
+        <span>mode on</span>
+      </h1>
+      <a class="btn" href="#products_section">shop now</a>
+    </div>
+  </header>
+
+  <!-- Main -->
+  <main>
+    <section class="advert section">
+      <div class="advert-center container">
+        <div class="advert-box">
+          <div class="dotted">
+            <div class="content">
+              <h2>
+                Sports <br />
+                shoes
+              </h2>
+              <h4>Worlds Best Brands</h4>
+            </div>
+          </div>
+          <img src="./images/new1.png" alt="">
+        </div>
+
+        <div class="advert-box">
+          <div class="dotted">
+            <div class="content">
+              <h2>
+                Athletic <br />
+                Shoes
+              </h2>
+              <h4>Hot favourites</h4>
+            </div>
+          </div>
+          <img src="./images/collection2.png" alt="">
+        </div>
+
+        <div class="advert-box">
+          <div class="dotted">
+            <div class="content">
+              <h2>
+                Army <br />
+                Shoes
+              </h2>
+              <h4>Top Class</h4>
+            </div>
+          </div>
+          <img src="./images/new4.png" alt="">
+        </div>
+      </div>
+    </section>
+
+    <!-- Featured -->
+    <section class="section featured" id="products_section">
+      <div class="title">
+        <h1>Featured Products</h1>
+      </div>
+
+      <div class="product-center container">
+        <div class="product">
+          <div class="product-header">
+            <img src="./images/new2.png" alt="" style="max-width:100%; height:auto;padding-top: 80px;">
+            <ul class="icons">
+
+              <span><i class="bx bx-shopping-bag" ng-click="counterForItem(0)"></i></span>
+
+            </ul>
+          </div>
+          <div class="product-footer">
+            <a href="#">
+              <h3>Boy’s shoes 1</h3>
+            </a>
+            <div class="rating">
+              <i class="bx bxs-star"></i>
+              <i class="bx bxs-star"></i>
+              <i class="bx bxs-star"></i>
+              <i class="bx bxs-star"></i>
+              <i class="bx bx-star"></i>
+            </div>
+            <h4 class="price">₹10</h4>
+          </div>
+        </div>
+        <div class="product">
+          <div class="product-header">
+            <img src="./images/featured1.png" alt="" style="max-width:100%; height:auto;padding-top: 80px;">
+            <ul class="icons">
+
+              <span><i class="bx bx-shopping-bag" ng-click="counterForItem(1)"></i></span>
+
+            </ul>
+          </div>
+          <div class="product-footer">
+            <a href="#">
+              <h3>Boy’s shoes 2</h3>
+            </a>
+            <div class="rating">
+              <i class="bx bxs-star"></i>
+              <i class="bx bxs-star"></i>
+              <i class="bx bxs-star"></i>
+              <i class="bx bxs-star"></i>
+              <i class="bx bx-star"></i>
+            </div>
+            <h4 class="price">₹20</h4>
+          </div>
+        </div>
+        <div class="product">
+          <div class="product-header">
+            <img src="./images/featured2.png" alt="" style="max-width:100%; height:auto;padding-top: 80px;">
+            <ul class="icons">
+              <span><i class="bx bx-shopping-bag" ng-click="counterForItem(2)"></i></span>
+            </ul>
+          </div>
+          <div class="product-footer">
+            <a href="#">
+              <h3>Boy’s Shoes 3</h3>
+            </a>
+            <div class="rating">
+              <i class="bx bxs-star"></i>
+              <i class="bx bxs-star"></i>
+              <i class="bx bxs-star"></i>
+              <i class="bx bxs-star"></i>
+              <i class="bx bx-star"></i>
+            </div>
+            <h4 class="price">₹30</h4>
+          </div>
+        </div>
+        <div class="product">
+          <div class="product-header">
+            <img src="./images/featured3.png" alt="" style="max-width:100%; height:auto;padding-top: 80px;">
+
+            <ul class="icons">
+              <span><i class="bx bx-shopping-bag" ng-click="counterForItem(3)"></i></span>
+            </ul>
+          </div>
+          <div class="product-footer">
+            <a href="#">
+              <h3>Boy’s Shoes 4</h3>
+            </a>
+            <div class="rating">
+              <i class="bx bxs-star"></i>
+              <i class="bx bxs-star"></i>
+              <i class="bx bxs-star"></i>
+              <i class="bx bxs-star"></i>
+              <i class="bx bx-star"></i>
+            </div>
+            <h4 class="price">₹40</h4>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!--Latest -->
+    <section class="section featured">
+      <div class="title">
+        <h1>Latest Products</h1>
+      </div>
+
+      <div class="product-center container">
+        <div class="product">
+          <div class="product-header">
+            <img src="./images/pic5.png" alt="">
+
+            <ul class="icons">
+              <span><i class="bx bx-shopping-bag" ng-click="counterForItem(4)"></i></span>
+            </ul>
+          </div>
+          <div class="product-footer">
+            <a href="#">
+              <h3>Boy’s shoes 5</h3>
+            </a>
+            <div class="rating">
+              <i class="bx bxs-star"></i>
+              <i class="bx bxs-star"></i>
+              <i class="bx bxs-star"></i>
+              <i class="bx bxs-star"></i>
+              <i class="bx bx-star"></i>
+            </div>
+            <h4 class="price">₹50</h4>
+          </div>
+        </div>
+        <div class="product">
+          <div class="product-header">
+            <img src="./images/new1.png" alt="" style="max-width:100%; height:auto;padding-top: 80px;">
+
+            <ul class="icons">
+
+              <span><i class="bx bx-shopping-bag" ng-click="counterForItem(5)"></i></span>
+
+            </ul>
+          </div>
+          <div class="product-footer">
+            <a href="#">
+              <h3>Boy’s shoes 6</h3>
+            </a>
+            <div class="rating">
+              <i class="bx bxs-star"></i>
+              <i class="bx bxs-star"></i>
+              <i class="bx bxs-star"></i>
+              <i class="bx bxs-star"></i>
+              <i class="bx bx-star"></i>
+            </div>
+            <h4 class="price">₹60</h4>
+          </div>
+        </div>
+        <div class="product">
+          <div class="product-header">
+            <img src="./images/new3.png" alt="" style="max-width:100%; height:auto;padding-top: 80px;">
+
+            <ul class="icons">
+              <span><i class="bx bx-shopping-bag" ng-click="counterForItem(6)"></i></span>
+            </ul>
+          </div>
+          <div class="product-footer">
+            <a href="#">
+              <h3>Boy’s shoes 7</h3>
+            </a>
+            <div class="rating">
+              <i class="bx bxs-star"></i>
+              <i class="bx bxs-star"></i>
+              <i class="bx bxs-star"></i>
+              <i class="bx bxs-star"></i>
+              <i class="bx bx-star"></i>
+            </div>
+            <h4 class="price">₹70</h4>
+          </div>
+        </div>
+        <div class="product">
+          <div class="product-header">
+            <img src="./images/new4.png" alt="" style="max-width:100%; height:auto;padding-top: 80px;">
+
+            <ul class="icons">
+              <span><i class="bx bx-shopping-bag" ng-click="counterForItem(7)"></i></span>
+            </ul>
+          </div>
+          <div class="product-footer">
+            <a href="#">
+              <h3>Boy’s shoes 8</h3>
+            </a>
+            <div class="rating">
+              <i class="bx bxs-star"></i>
+              <i class="bx bxs-star"></i>
+              <i class="bx bxs-star"></i>
+              <i class="bx bxs-star"></i>
+              <i class="bx bx-star"></i>
+            </div>
+            <h4 class="price">₹80</h4>
+          </div>
+        </div>
+        <div class="product">
+          <div class="product-header">
+            <img src="./images/new5.png" alt="" style="max-width:100%; height:auto;padding-top: 80px;">
+
+            <ul class="icons">
+              <span><i class="bx bx-shopping-bag" ng-click="counterForItem(8)"></i></span>
+            </ul>
+          </div>
+          <div class="product-footer">
+            <a href="#">
+              <h3>Boy’s shoes 9</h3>
+            </a>
+            <div class="rating">
+              <i class="bx bxs-star"></i>
+              <i class="bx bxs-star"></i>
+              <i class="bx bxs-star"></i>
+              <i class="bx bxs-star"></i>
+              <i class="bx bx-star"></i>
+            </div>
+            <h4 class="price">₹90</h4>
+          </div>
+        </div>
+        <div class="product">
+          <div class="product-header">
+            <img src="./images/featured1.png" alt="" style="max-width:100%; height:auto;padding-top: 80px;">
+
+            <ul class="icons">
+              <span><i class="bx bx-shopping-bag" ng-click="counterForItem(9)"></i></span>
+            </ul>
+          </div>
+          <div class="product-footer">
+            <a href="#">
+              <h3>Boy’s shoes 10</h3>
+            </a>
+            <div class="rating">
+              <i class="bx bxs-star"></i>
+              <i class="bx bxs-star"></i>
+              <i class="bx bxs-star"></i>
+              <i class="bx bxs-star"></i>
+              <i class="bx bx-star"></i>
+            </div>
+            <h4 class="price">₹100</h4>
+          </div>
+        </div>
+        <div class="product">
+          <div class="product-header">
+            <img src="./images/featured2.png" alt="" style="max-width:100%; height:auto;padding-top: 80px;">
+
+            <ul class="icons">
+              <span><i class="bx bx-shopping-bag" ng-click="counterForItem(10)"></i></span>
+            </ul>
+          </div>
+          <div class="product-footer">
+            <a href="#">
+              <h3>Boy’s shoes 11</h3>
+            </a>
+            <div class="rating">
+              <i class="bx bxs-star"></i>
+              <i class="bx bxs-star"></i>
+              <i class="bx bxs-star"></i>
+              <i class="bx bxs-star"></i>
+              <i class="bx bx-star"></i>
+            </div>
+            <h4 class="price">₹110</h4>
+          </div>
+        </div>
+        <div class="product">
+          <div class="product-header">
+            <img src="./images/featured3.png" alt="" style="max-width:100%; height:auto;padding-top: 80px;">
+
+            <ul class="icons">
+              <span><i class="bx bx-shopping-bag" ng-click="counterForItem(11)"></i></span>
+            </ul>
+          </div>
+          <div class="product-footer">
+            <a href="#">
+              <h3>Boy’s shoes 12</h3>
+            </a>
+            <div class="rating">
+              <i class="bx bxs-star"></i>
+              <i class="bx bxs-star"></i>
+              <i class="bx bxs-star"></i>
+              <i class="bx bxs-star"></i>
+              <i class="bx bx-star"></i>
+            </div>
+            <h4 class="price">₹120</h4>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Product Banner -->
+    <section class="section" id="testimonials_section">
+      <div class="product-banner">
+        <div class="left">
+          <img src="./images/poster-shoes.jpeg" alt="" style="height: 600px;width: auto; transform: scaleX(-1);" />
+        </div>
+        <div class="right">
+          <div class="content">
+            <h2><span class="discount">70% </span> SALE OFF</h2>
+            <h1>
+              <span>Collect Your</span>
+              <span>Sports Collection</span>
+            </h1>
+            <a class="btn" href="#products_section">shop now</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="section">
+      <div class="testimonial-center container">
+        <div class="testimonial">
+          <span>&ldquo;</span>
+          <p>
+            This is the fight of our lives and we’re going to win. Whatever it takes.I’m just a kid from Brooklyn.
+          </p>
+          <div class="rating">
+            <i class="bx bxs-star"></i>
+            <i class="bx bxs-star"></i>
+            <i class="bx bxs-star"></i>
+            <i class="bx bxs-star"></i>
+            <i class="bx bx-star"></i>
+          </div>
+          <div class="img-cover">
+            <img src="./images/profile1.png" alt="" />
+          </div>
+          <h4>Not Aayush</h4>
+        </div>
+        <div class="testimonial">
+          <span>&ldquo;</span>
+          <p>
+            The price of freedom is high, it always has been. And it’s a price I’m willing to pay. 
+          </p>
+          <div class="rating">
+            <i class="bx bxs-star"></i>
+            <i class="bx bxs-star"></i>
+            <i class="bx bxs-star"></i>
+            <i class="bx bxs-star"></i>
+            <i class="bx bxs-star"></i>
+          </div>
+          <div class="img-cover">
+            <img src="./images/preetpatel.png" alt="" />
+          </div>
+          <h4>Preet Patel</h4>
+        </div>
+        <div class="testimonial">
+          <span>&ldquo;</span>
+          <p>
+            I'm not looking for forgiveness, and I'm way past asking for permission. I can do this all day!
+          </p>
+          <div class="rating">
+            <i class="bx bxs-star"></i>
+            <i class="bx bxs-star"></i>
+            <i class="bx bxs-star"></i>
+            <i class="bx bxs-star"></i>
+            <i class="bx bx-star"></i>
+          </div>
+          <div class="img-cover">
+            <img src="./images/profile3.png" alt="" />
+          </div>
+          <h4>Not Aayush</h4>
+        </div>
+      </div>
+    </section>
+
+    <!-- Brands -->
+    <section class="section">
+      <div class="brands-center container">
+        <div class="brand">
+          <img src="./images/brand1.png" alt="" />
+        </div>
+        <div class="brand">
+          <img src="./images/brand2.png" alt="" />
+        </div>
+        <div class="brand">
+          <img src="./images/brand1.png" alt="" />
+        </div>
+        <div class="brand">
+          <img src="./images/brand2.png" alt="" />
+        </div>
+        <div class="brand">
+          <img src="./images/brand1.png" alt="" />
+        </div>
+        <div class="brand">
+          <img src="./images/brand2.png" alt="" />
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer id="footer" class="section footer">
+    <div class="container">
+      <div class="footer-container">
+        <div class="footer-center">
+          <h3>EXTRAS</h3>
+          <a href="#">Brands</a>
+          <a href="#">Gift Certificates</a>
+          <a href="#">Affiliate</a>
+          <a href="#">Specials</a>
+          <a href="#">Site Map</a>
+        </div>
+        <div class="footer-center">
+          <h3>INFORMATION</h3>
+          <a href="#">About Us</a>
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms & Conditions</a>
+          <a href="#">Contact Us</a>
+          <a href="#">Site Map</a>
+        </div>
+        <div class="footer-center">
+          <h3>MY ACCOUNT</h3>
+          <a href="#">My Account</a>
+          <a href="#">Order History</a>
+          <a href="#">Wish List</a>
+          <a href="#">Newsletter</a>
+          <a href="#">Returns</a>
+        </div>
+        <div class="footer-center">
+          <h3>&nbsp; CONTACT US</h3>
+          <div>
+            <span>
+              <i class="fas fa-map-marker-alt"></i>
+            </span>
+            1 fashion feet company, Fashion street, 9898<br> &nbsp;&nbsp; Vadodara, Gujarat
+          </div>
+          <div>
+            <span>
+              <i class="far fa-envelope"></i>
+            </span>
+            contact@fashionfeet.com
+          </div>
+          <div>
+            <span>
+              <i class="fas fa-phone"></i>
+            </span>
+            123-123-4321
+          </div>
+          <div>
+            <span>
+              <i class="far fa-paper-plane"></i>
+            </span>
+            Vadodara, Gujarat
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+  </footer>
+  <!-- End Footer -->
+
+  <!-- Custom Script -->
+  <script src="./js/index.js"></script
+</body>
+
+</html>

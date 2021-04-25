@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Sign up | Fashion Feet</title>
+
+    <!-- Font Icon -->
+    <link rel="stylesheet" href="fonts/material-icon/css/material-design-iconic-font.min.css">
+
+    <!-- ico -->
+    <link rel="icon" href="./images/account-favicon.png">
+
+
+    <!-- Main css -->
+    <link rel="stylesheet" href="css/style.css">
+
+    <!-- Title changing and Form validation script -->
+    <script>
+        function changeTitle(choice) {
+            if (choice == 1) {
+                document.title = 'Sign up | Fashion Feet';
+            }
+            else {
+                document.title = 'Login | Fashion Feet';
+            }
+        }
+
+        function performValidation(choice) {
+            if (choice == 1) {
+                return validateRegisterForm();
+            }
+            else {
+                return validateLoginForm();
+            }
+        }
+
+        function validateLoginForm() {
+            var email = document.getElementById("login_email");
+            var password = document.getElementById("login_password");
+
+            var email_check = /\S+@\S+\.\S+/;
+            var password_check = /^(?=.*\d)(?=.*[a-zA-Z])[a-zA-Z0-9]{8,}$/;
+
+
+            if (email.value == "" || !email_check.test(email.value)) {
+                email.setCustomValidity("Please enter valid email address");
+                return false;
+            }
+            else if (password.value.trim().length < 8) {
+                password.setCustomValidity("Password must contain atleast 8 characters");
+                return false;
+            }
+            else if (!password_check.test(password.value)) {
+                password.setCustomValidity("Password must be a combination of uppercase letter, lowercase letter, and digits");
+                return false;
+            }
+            else {
+                sessionStorage.setItem("Choice", "2");
+                sessionStorage.setItem("Email", email.value);
+                sessionStorage.setItem("Password", password.value);
+                return true;
+            }
+        }
+
+        function validateRegisterForm() {
+            var name = document.getElementById("register_name");
+            var email = document.getElementById("register_email");
+            var password = document.getElementById("register_password");
+            var repassword = document.getElementById("register_repassword");
+
+            var name_check = /^[a-zA-Z ]{2,30}$/;
+            var email_check = /\S+@\S+\.\S+/;
+            var password_check = /^(?=.*\d)(?=.*[a-zA-Z])[a-zA-Z0-9]{8,}$/;
+
+            if (name.value.trim() == '') {
+                name.setCustomValidity("Enter your name!");
+                return false;
+            }
+            else if (!name_check.test(name.value)) {
+                name.setCustomValidity("Enter a valid name!");
+                return false;
+            }
+            else if (email.value == "") {
+                email.setCustomValidity("Enter your email!");
+                return false;
+            }
+            else if (!email_check.test(email.value)) {
+                email.setCustomValidity("Enter a valid email!");
+                return false;
+            }
+            else if (password.value.trim().length < 8) {
+                password.setCustomValidity("Password length less than 8");
+                return false;
+            }
+            else if (!password_check.test(password.value)) {
+                password.setCustomValidity("Enter a valid password");
+                return false;
+            }
+            else if (password.value != repassword.value) {
+                repassword.setCustomValidity("Password mismatch");
+                return false;
+            }
+            else {
+                sessionStorage.setItem("Choice", "1");
+                sessionStorage.setItem("Name", name.value);
+                sessionStorage.setItem("Email", email.value);
+                sessionStorage.setItem("Password", password.value);
+                return true;
+            }
+        }
+    </script>
+</head>
+
+<body>
+
+    <div class="main" id="login">
+
+        <!-- Sign up form -->
+        <section class="signup">
+            <div class="container">
+                <div class="signup-content">
+                    <div class="signup-form">
+                        <h2 class="form-title">Sign up</h2>
+                        <!-- <form method="POST" class="register-form" id="register-form" onclick=""> -->
+                        <form method="POST" class="register-form" id="register-form" action="../sample1/index.html"
+                            onsubmit="return performValidation(1)">
+
+                            <div class="form-group">
+                                <label for="name"><i class="zmdi zmdi-account material-icons-name"></i></label>
+                                <input type="text" name="name" id="register_name" placeholder="Your Name"
+                                    oninput="this.setCustomValidity('')" />
+                            </div>
+                            <div class=" form-group">
+                                <label for="email"><i class="zmdi zmdi-email"></i></label>
+                                <input type="email" name="email" id="register_email" placeholder="Your Email"
+                                    oninput="this.setCustomValidity('')" />
+                            </div>
+                            <div class="form-group">
+                                <label for="pass"><i class="zmdi zmdi-lock"></i></label>
+                                <input type="password" name="pass" id="register_password" placeholder="Password"
+                                    oninput="this.setCustomValidity('')" />
+                            </div>
+                            <div class="form-group">
+                                <label for="re-pass"><i class="zmdi zmdi-lock-outline"></i></label>
+                                <input type="password" name="re_pass" id="register_repassword"
+                                    placeholder="Repeat your password" oninput="this.setCustomValidity('')" />
+                            </div>
+                            <div class="form-group">
+                                <input type="checkbox" name="agree-term" id="agree-term" class="agree-term" />
+                                <label for="agree-term" class="label-agree-term"><span><span></span></span>I agree all
+                                    statements in <a href="#" class="term-service">Terms of service</a></label>
+                            </div>
+                            <div class="form-group form-button">
+                                <!-- <input type="submit" name="signup" id="signup" class="form-submit" value="Register" /> -->
+                                <input type="submit" name="signup" id="signup" class="form-submit" value="Register" />
+                            </div>
+                        </form>
+                    </div>
+                    <div class="signup-image">
+                        <figure><img src="images/signup-image.jpg" alt="sing up image"></figure>
+                        <a href="#create-acc" class="signup-image-link" onclick="changeTitle(2);">I am already
+                            member</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sing in  Form -->
+        <section class="sign-in" id="create-acc">
+            <br>
+            <br>
+            <br>
+            <br>
+            <div class="container">
+                <div class="signin-content">
+                    <div class="signin-image">
+                        <figure><img src="images/signin-image.jpg" alt="sing up image"></figure>
+                        <a href="#login" class="signup-image-link" onclick="changeTitle(1);">Create an account</a>
+                    </div>
+
+                    <div class="signin-form">
+                        <h2 class="form-title">Login</h2>
+                        <form method="POST" class="register-form" id="login-form" action="./../sample1/index.html"
+                            onsubmit="return performValidation(2)">
+                            <div class="form-group">
+                                <label for="your_name"><i class="zmdi zmdi-account material-icons-name"></i></label>
+                                <input type="email" name="login_email" id="login_email" placeholder="Your Email"
+                                    oninput="this.setCustomValidity('')" />
+                            </div>
+                            <div class="form-group">
+                                <label for="your_pass"><i class="zmdi zmdi-lock"></i></label>
+                                <input type="password" name="login_password" id="login_password" placeholder="Password"
+                                    oninput="this.setCustomValidity('')" />
+                            </div>
+                            <div class="form-group">
+                                <input type="checkbox" name="remember-me" id="remember-me" class="agree-term" />
+                                <label for="remember-me" class="label-agree-term"><span><span></span></span>Remember
+                                    me</label>
+                            </div>
+                            <div class="form-group form-button">
+                                <input type="submit" name="signin" id="signin" class="form-submit" value="Log in" />
+                            </div>
+                        </form>
+                        <div class="social-login">
+                            <span class="social-label">Or login with</span>
+                            <ul class="socials">
+                                <li><a href="#"><i class="display-flex-center zmdi zmdi-facebook"></i></a></li>
+                                <li><a href="#"><i class="display-flex-center zmdi zmdi-twitter"></i></a></li>
+                                <li><a href="#"><i class="display-flex-center zmdi zmdi-google"></i></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+</body>
+
+</html>
